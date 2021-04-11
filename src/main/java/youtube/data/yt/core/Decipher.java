@@ -1,4 +1,4 @@
-package youtube.data.yt.util;
+package youtube.data.yt.core;
 
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import youtube.data._yt_player.YtPlayer;
-import youtube.data.yt.core.Client;
+import youtube.data.yt.util.BList;
+import youtube.data.yt.util.YExtractor;
 
 public class Decipher {
 

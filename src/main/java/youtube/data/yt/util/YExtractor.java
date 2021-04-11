@@ -3,6 +3,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import youtube.data._yt_player.YtPlayer;
+import youtube.data.yt.core.Decipher;
 import youtube.data.yt.core.Inet;
 import youtube.data.niche.VideoInfo;
 

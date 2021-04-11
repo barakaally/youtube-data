@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import youtube.data.yt.core.Client;
 import youtube.data.niche.Response;
 import youtube.data.niche.VideoInfo;
-import youtube.data.yt.util.Player;
+import youtube.data.yt.core.Player;
 import youtube.data.yt.util.YExtractor;
 
 

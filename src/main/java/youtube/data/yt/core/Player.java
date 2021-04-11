@@ -1,8 +1,9 @@
-package youtube.data.yt.util;
+package youtube.data.yt.core;
+
 import java.net.http.HttpResponse;
 import youtube.data._yt_player.YtPlayer;
 import youtube.data.config.Config;
-import youtube.data.yt.core.Client;
+import youtube.data.yt.util.YExtractor;
 
 public class Player {
 
