@@ -21,7 +21,7 @@ public class Decipher {
     public static String decode(String sig) {
         YtPlayer player = Player.get();
         String[] a = sig.split("");
-        for (String d : player.decipher) {
+        for (String d : player.getDecipher()) {
             a = decreptSignatuture(a, d);
         }
         return String.join("", a);
@@ -30,7 +30,7 @@ public class Decipher {
     public static List<String> load(YtPlayer player) {
 
         try {
-            HttpResponse<String> response = Client.getYtPlayerDecipher(player.jsUrl);
+            HttpResponse<String> response = Client.getYtPlayerDecipher(player.getJsUrl());
             return YExtractor.parsePlayerDecipher(response.body());
 
         } catch (Exception e) {

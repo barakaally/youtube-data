@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YtPlayer {
-    public String host;
-    public String jsUrl;
-    public List<String> decipher;
+    private String host;
+    private String jsUrl;
+    private List<String> decipher;
 
     public YtPlayer(String host, String jsUrl) {
         this.host = host;
@@ -20,5 +20,14 @@ public class YtPlayer {
     public void setDecipher(List<String> decipher) {
         this.decipher = decipher;
     }
+
+    public String getHost() {
+        return host;
+    }
+
+    public String getJsUrl() {
+        return jsUrl;
+    }
+
 
 }
