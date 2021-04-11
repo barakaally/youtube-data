@@ -3,7 +3,18 @@ package youtube.data.niche;
 public class PlayabilityStatus
 {
 
-    public String status;
-    public Boolean playableInEmbed;
-    public Object miniplayer;
+    private String status;
+    private Boolean playableInEmbed;
+    private Object miniplayer;
+    public String getStatus() {
+        return status;
+    }
+    public Boolean getPlayableInEmbed() {
+        return playableInEmbed;
+    }
+    
+    public Object getMiniplayer() {
+        return miniplayer;
+    }
+   
 }

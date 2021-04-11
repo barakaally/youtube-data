@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class Client {
+ public class Client {
 
     public static CompletableFuture<HttpResponse<String>>  getVideoInfoAsync(String videoId){
         HttpClient client = HttpClient.newHttpClient();

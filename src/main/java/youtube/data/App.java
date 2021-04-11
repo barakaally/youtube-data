@@ -17,8 +17,8 @@ class App
          * sample api-usage
          */
         Youtube youtube=new Youtube().buildPlayer();
-        Response response=youtube.getVideoInfo("ULJxwUkSEPs");
-        System.out.println(String.valueOf(response.data.getPlayer_response().getStreamingData().getFormats().get(0).getUrl().toString()));
+        Response response=youtube.getVideoInfo("V3Pavo7eCmI");
+        System.out.println(String.valueOf(response.data.getPlayer_response().getStreamingData().getFormats().get(0).getUrl()));
           
     }
 }

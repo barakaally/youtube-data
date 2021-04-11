@@ -11,7 +11,19 @@
   <name>youtube-data</name>
   <!-- FIXME change it to the project's website -->
   <url>https://github.com/barakaally/youtube-data</url>
-
+  <scm>
+    <connection>scm:git:https://github.com/barakaally/youtube-data.git</connection>
+    <developerConnection>scm:git:https://github.com/barakaally/youtube-data.git</developerConnection>
+    <url>https://github.com/barakaally/youtube-data</url>
+    <tag>v1.0.0</tag>
+  </scm>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>Github Packages</name>
+      <url>https://maven.pkg.github.com/barakaally/youtube-data</url>
+    </repository>
+  </distributionManagement>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>

@@ -100,7 +100,7 @@ public class YExtractor {
 				matcher.results().findAny().get().group(0));
 	}
 
-	public static String parseCipheredUrl(String sig) {
+	public static String parseSignatureCipher(String sig) {
 
 		List<String> s = Arrays.asList(sig.toString().split("&"));
 		String url = s.stream().filter((String x) -> x.contains("url")).findAny().get();

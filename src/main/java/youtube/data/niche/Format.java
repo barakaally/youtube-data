@@ -27,6 +27,7 @@ public class Format
        private String approxDurationMs;
        private String audioSampleRate;
        private int audioChannels;
+       
        public String getUrl() {
             if(url!=null){
              return url;
@@ -34,7 +35,8 @@ public class Format
             else
             {
                 try {
-                    return YExtractor.parseCipheredUrl(URLDecoder.decode(signatureCipher,"UTF-8"));
+                    return YExtractor.parseSignatureCipher(URLDecoder.decode(signatureCipher,"UTF-8"));
+
                 } catch (UnsupportedEncodingException e) {
                     
                     return null;
