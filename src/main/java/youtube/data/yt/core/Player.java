@@ -2,7 +2,7 @@ package youtube.data.yt.core;
 
 import java.net.http.HttpResponse;
 import youtube.data._yt_player.YtPlayer;
-import youtube.data.config.Config;
+import youtube.data.config.YtConfig;
 import youtube.data.yt.util.YExtractor;
 
 public class Player {
@@ -24,7 +24,7 @@ public class Player {
         try {
 
             player.setDecipher(Decipher.load(player));
-            Config.setPlayer(player);
+            YtConfig.setPlayer(player);
 
         } catch (Exception e) {
 
@@ -35,7 +35,7 @@ public class Player {
     }
 
     public static YtPlayer get(){
-        return Config.getPlayer();
+        return YtConfig.getPlayer();
     }
 
 }
