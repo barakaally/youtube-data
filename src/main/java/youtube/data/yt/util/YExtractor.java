@@ -17,10 +17,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-
+/**
+ * @description the YExtractor
+ */
 public class YExtractor {
 	private static HashMap<String, String> deciphers = new HashMap<String, String>();
-
+    /**
+	 * 
+	 * @param videoInfo
+	 * @return VideoInfo return the videoInfo
+	 * @throws UnsupportedEncodingException
+	 */
 	public static VideoInfo parseVideoInfo(String videoInfo) throws UnsupportedEncodingException {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String[] a = URLDecoder.decode(videoInfo, "UTF-8").split("&");
@@ -42,7 +49,11 @@ public class YExtractor {
 		}.getType();
 		return new GsonBuilder().disableHtmlEscaping().create().fromJson(BHashMap.toJsonElement(map).toString(), type);
 	}
-
+    /**
+	 * 
+	 * @param playerInfo
+	 * @return YtPlayer return the ytPlayer
+	 */
 	public static YtPlayer parsePlayerInfo(String playerInfo) {
 		Pattern p = Pattern
 				.compile("\\/s\\/player\\/[a-zA-Z0-9]{1,}\\/[(a-zA-z)\\.(a-zA-Z)]{1,}\\/[(a-zA-Z)\\_]{1,}\\/base.js");
@@ -50,18 +61,12 @@ public class YExtractor {
 		String host = Inet.getHost();
 		return new YtPlayer(host, m.results().findAny().get().group(0));
 	}
-
+    /**
+	 * 
+	 * @param playerInfo
+	 * @return List<String> return List<String> of decipher fn
+	 */
 	public static List<String> parsePlayerDecipher(String playerInfo) {
-		/**
-		 * playerJs,
-		 * https://www.youtube.com/s/player/d2ff46c3/player_ias.vflset/sw_TZ/base.js ,
-		 * ```vy = function (a) { a =a.split("");uy.Mg(a,55);uy.Wb(a,27);uy.d8(a,
-		 * 3);uy.Wb(a, 23);uy.Mg(a,53);uy.Wb(a, 56);uy.Wb(a,46);uy.Mg(a, 27);uy.d8(a,
-		 * 1);return a.join(""); }``` sliceFn , ```d8: function (a, b) {a.splice(0,
-		 * b);}``` shiftFn, ```aT: function(a, b) { var c = a[0];a[0] = a[b %
-		 * a.length];a[b %a.length] = c;}``` reverseFn, ```NL: function (a)
-		 * {a.reverse();}```,
-		 ***/
 
 		Pattern ytSlice = Pattern.compile(
 				"[a-zA-Z0-9]{1,}\\:function\\([a-zA-Z0-9]{1,}\\,[a-zA-Z0-9]{1,}\\)\\{[a-zA-Z0-9]{1,}\\.splice\\([0-9]{1}\\,[a-zA-Z0-9]{1,}\\)\\}");
@@ -93,14 +98,22 @@ public class YExtractor {
 		
 
 	}
-
+    /**
+	 * 
+	 * @param decipher
+	 * @return String return String of transformed decipher fn
+	 */
 	private static String decipherMap(String decipher) {
 		Pattern decipherp = Pattern.compile("\\([a-zA-Z0-9]{1,}\\,[0-9]{1,}\\)");
 		Matcher matcher = decipherp.matcher(decipher);
 		return String.format(deciphers.get(decipher.replaceAll("\\([a-zA-Z0-9]{1,}\\,[0-9]{1,}\\)", "")) + "%s",
 				matcher.results().findAny().get().group(0));
 	}
-
+    /**
+	 * 
+	 * @param sig signatureCipher
+	 * @return String return the deciphered url
+	 */
 	public static String parseSignatureCipher(String sig) {
 
 		List<String> s = Arrays.asList(sig.toString().split("&"));

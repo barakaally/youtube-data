@@ -1,5 +1,7 @@
 package youtube.data.niche;
-
+/**
+ * @description the Snippet
+ */
 public class Snippet {
     private String publishedAt;
     private String channelId;

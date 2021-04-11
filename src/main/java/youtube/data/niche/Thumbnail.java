@@ -1,5 +1,7 @@
 package youtube.data.niche;
-
+/**
+ * @description the Thumbnail
+ */
 public class Thumbnail {
  private Media _default;
  private Media medium;

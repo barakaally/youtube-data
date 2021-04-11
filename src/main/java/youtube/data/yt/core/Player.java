@@ -4,9 +4,13 @@ import java.net.http.HttpResponse;
 import youtube.data._yt_player.YtPlayer;
 import youtube.data.config.YtConfig;
 import youtube.data.yt.util.YExtractor;
-
+/**
+ * @description the Player
+ */
 public class Player {
-
+    /**
+     * @description build and set Youtube Player
+     */
     public static void build() {
 
         try {
@@ -19,7 +23,10 @@ public class Player {
         }
 
     }
-
+    /**
+     * 
+     * @param player Set Youtube Player
+     */
     public static void set(YtPlayer player) {
         try {
 
@@ -33,7 +40,10 @@ public class Player {
         }
 
     }
-
+    /**
+     * 
+     * @return YtPlayer return the YtPlayer 
+     */
     public static YtPlayer get(){
         return YtConfig.getPlayer();
     }

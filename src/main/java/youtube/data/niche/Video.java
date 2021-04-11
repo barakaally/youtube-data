@@ -1,5 +1,7 @@
 package youtube.data.niche;
-
+/**
+ * @description the Video
+ */
 public class Video {
    private String kind;
    private String videoId;

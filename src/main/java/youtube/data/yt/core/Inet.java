@@ -4,9 +4,14 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
-
+/**
+ * @description the Inet
+ */
 public abstract class Inet {
-
+    /**
+     * 
+     * @return String return the public IpAddress of Machine
+     */
     static public String getHost() {
 
         try {

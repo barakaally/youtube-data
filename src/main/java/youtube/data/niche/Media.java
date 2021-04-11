@@ -1,5 +1,7 @@
 package youtube.data.niche;
-
+/**
+ * @description the video media
+ */
 public class Media {
     private String url;
     private int width;

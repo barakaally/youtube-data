@@ -4,12 +4,11 @@ import java.io.IOException;
 import youtube.data.niche.Response;
 import youtube.data.niche.SearchListResponse;
 import youtube.data.yt.Youtube;
-import youtube.data.yt.core.Client;
-
 
 /**
  * youtube-data
  * created by baraka ally <baraka.ally.co.tz@gmail.com>
+ * #use this for testing only#
  */
 class App
 {
@@ -20,7 +19,7 @@ class App
          * apikey=required if you need to search on youtube
          * buildPlayer() is required for ciphered video,call it to avoid unauthorized response from youtube 
          */
-        Youtube youtube=new Youtube("apiKey").buildPlayer();
+        Youtube youtube=new Youtube("your apiKey").buildPlayer();
         /**
          * seach video on youtube
          */
@@ -30,7 +29,7 @@ class App
          * Get url to playVideo
          */
         Response response=youtube.getVideoInfo(videoId);
-        String videoUrl=response.data.getPlayer_response().getStreamingData().getFormats().get(0).getUrl();
+        String videoUrl=response.getData().getPlayer_response().getStreamingData().getFormats().get(0).getUrl();
 
         System.out.println(videoUrl);
         

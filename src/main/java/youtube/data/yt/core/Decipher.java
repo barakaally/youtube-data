@@ -9,15 +9,26 @@ import java.util.List;
 import youtube.data._yt_player.YtPlayer;
 import youtube.data.yt.util.BList;
 import youtube.data.yt.util.YExtractor;
-
+/**
+ * @description the Decipher
+ */
 public class Decipher {
-
+    /**
+     * 
+     * @param a  rotating input array
+     * @param s  decipher's function 
+     * @return String[] return the String[] of rotated array
+     */
     private static String[] decreptSignatuture(String[] a, String s) {
         int b = Integer.parseInt(s.replaceAll("[a-zA-Z0-9]{1,}\\([a-zA-Z0-9]{1,}\\,", "").replaceAll("\\)", "").trim());
 
         return s.contains("Bx")?slice(a, b):s.contains("By")?shift(a, b):s.contains("Bz")?reverse(a, b):a;
     }
-
+    /**
+     * 
+     * @param sig signature
+     * @return String return the String of deciphered signature
+     */
     public static String decode(String sig) {
         YtPlayer player = Player.get();
         String[] a = sig.split("");
@@ -26,7 +37,11 @@ public class Decipher {
         }
         return String.join("", a);
     }
-
+    /**
+     * 
+     * @param player
+     * @return List<String> return the List<String> of decipher fn of loaded player
+     */
     public static List<String> load(YtPlayer player) {
 
         try {

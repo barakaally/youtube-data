@@ -1,7 +1,9 @@
 package youtube.data.niche;
 
 import java.util.List;
-
+/**
+ * @description the SearchListResponse
+ */
 public class SearchListResponse {
   private String kind;
   private String etag;
