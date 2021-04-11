@@ -1,5 +1,4 @@
-﻿package youtube.data.niche;
-
+package youtube.data.niche;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import youtube.data.yt.util.YExtractor;

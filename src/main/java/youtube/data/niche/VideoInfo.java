@@ -1,4 +1,4 @@
-﻿package youtube.data.niche;
+package youtube.data.niche;
 
 public class VideoInfo {
     private String vss_host;
