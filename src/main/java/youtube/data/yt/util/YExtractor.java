@@ -4,9 +4,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import youtube.data._yt_player.YtPlayer;
 import youtube.data.yt.core.Decipher;
-import youtube.data.yt.core.Inet;
 import youtube.data.niche.VideoInfo;
-
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
@@ -54,12 +52,16 @@ public class YExtractor {
 	 * @param playerInfo
 	 * @return YtPlayer return the ytPlayer
 	 */
-	public static YtPlayer parsePlayerInfo(String playerInfo) {
+	public static void parsePlayer(String playerInfo) {
 		Pattern p = Pattern
 				.compile("\\/s\\/player\\/[a-zA-Z0-9]{1,}\\/[(a-zA-z)\\.(a-zA-Z)]{1,}\\/[(a-zA-Z)\\_]{1,}\\/base.js");
 		Matcher m = p.matcher(playerInfo);
-		String host = Inet.getHost();
-		return new YtPlayer(host, m.results().findAny().get().group(0));
+		if(m.find()){
+			YtPlayer.setJsUrl(m.group(0));
+			YtPlayer.setDecipher(Decipher.load(YtPlayer.getJsUrl()));
+			
+		}
+	
 	}
     /**
 	 * 
@@ -71,28 +73,40 @@ public class YExtractor {
 		Pattern ytSlice = Pattern.compile(
 				"[a-zA-Z0-9]{1,}\\:function\\([a-zA-Z0-9]{1,}\\,[a-zA-Z0-9]{1,}\\)\\{[a-zA-Z0-9]{1,}\\.splice\\([0-9]{1}\\,[a-zA-Z0-9]{1,}\\)\\}");
 		Matcher b = ytSlice.matcher(playerInfo);
-		deciphers.put(b.results().findAny().get().group(0).split(":")[0], "Bx");
-
+		if(b.find()){
+			
+			deciphers.put(b.group(0).split(":")[0], "Bx");
+		}
+		
 		Pattern ytShift = Pattern.compile(
 				"[a-zA-Z0-9]{1,}\\:function\\([a-zA-Z0-9]{1,}\\,[a-zA-Z0-9]{1,}\\)\\{var [a-zA-Z]\\=[a-zA-Z0-9]\\[0\\]\\;[a-zA-Z0-9]\\[0\\]\\=[a-zA-Z0-9]\\[[a-zA-Z0-9]{1,}\\%[a-zA-Z0-9]{1,}\\.length\\]\\;[a-zA-Z0-9]\\[[a-zA-Z0-9]{1,}\\%[a-zA-Z0-9]{1,}\\.length\\]\\=[a-zA-Z0-9]{1,}\\}");
 		Matcher c = ytShift.matcher(playerInfo);
-		deciphers.put(c.results().findAny().get().group(0).split(":")[0], "By");
+		if(c.find()){
+			
+			deciphers.put(c.group(0).split(":")[0], "By");
+		}
 
 		Pattern ytReverse = Pattern.compile(
 				"[a-zA-Z0-9]{1,}\\:function\\([a-zA-Z0-9]{1,}[\\,[a-zA-Z0-9]{1,}]{0,}\\)\\{[a-zA-Z0-9]{1,}\\.reverse\\(\\)\\}");
 		Matcher d = ytReverse.matcher(playerInfo);
 
-		deciphers.put(d.results().findAny().get().group(0).split(":")[0], "Bz");
+		if(d.find()){
+			
+			deciphers.put(d.group(0).split(":")[0], "Bz");
+		}
 
 		Pattern ytDecipher = Pattern.compile(
 				"[a-zA-Z]{1,}=function\\([a-zA-Z]{1,}\\)\\{[a-zA-Z]{1,}\\=[a-zA-Z]{1,}\\.split\\(\"\"\\)\\;[[a-zA-Z]{1,}\\.[a-zA-Z]{1,}\\([a-zA-Z]{1,},[0-9]{1,}\\)\\;]{1,}return [a-zA-Z]{1,}\\.join\\(\"\"\\)\\}");
 		Matcher a = ytDecipher.matcher(playerInfo);
 
-		Pattern decipher = Pattern
-				.compile("[a-zA-Z]{1,}=function\\([a-zA-Z]{1,}\\)\\{[a-zA-Z]{1,}\\=[a-zA-Z]{1,}\\.split\\(\"\"\\)\\;");
-		Matcher h = decipher.matcher(a.results().findAny().get().group(0));
-		String m = h.replaceAll("").replaceAll("return [a-zA-Z]{1,}\\.join\\(\"\"\\)\\}", "")
-				.replaceAll("[a-zA-Z0-9]{1,}\\.", "");
+		Pattern decipher = Pattern.compile("[a-zA-Z]{1,}=function\\([a-zA-Z]{1,}\\)\\{[a-zA-Z]{1,}\\=[a-zA-Z]{1,}\\.split\\(\"\"\\)\\;");
+	        	String m="";
+				if(a.find()){
+				  Matcher h = decipher.matcher(a.group(0));
+				   m = h.replaceAll("").replaceAll("return [a-zA-Z]{1,}\\.join\\(\"\"\\)\\}", "").replaceAll("[a-zA-Z0-9]{1,}\\.", "");
+				}
+		
+		
 
 		return Arrays.asList(m.split(";")).stream().map(YExtractor::decipherMap).collect(Collectors.toList());
 		
@@ -106,8 +120,13 @@ public class YExtractor {
 	private static String decipherMap(String decipher) {
 		Pattern decipherp = Pattern.compile("\\([a-zA-Z0-9]{1,}\\,[0-9]{1,}\\)");
 		Matcher matcher = decipherp.matcher(decipher);
-		return String.format(deciphers.get(decipher.replaceAll("\\([a-zA-Z0-9]{1,}\\,[0-9]{1,}\\)", "")) + "%s",
-				matcher.results().findAny().get().group(0));
+		if(matcher.find()){
+			return String.format(deciphers.get(decipher.replaceAll("\\([a-zA-Z0-9]{1,}\\,[0-9]{1,}\\)", "")) + "%s",
+			matcher.group(0));
+		}
+		
+		return decipher;
+		
 	}
     /**
 	 * 

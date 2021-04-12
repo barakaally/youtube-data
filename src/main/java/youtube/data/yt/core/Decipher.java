@@ -1,6 +1,5 @@
 package youtube.data.yt.core;
 
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,11 +29,12 @@ public class Decipher {
      * @return String return the String of deciphered signature
      */
     public static String decode(String sig) {
-        YtPlayer player = Player.get();
+
         String[] a = sig.split("");
-        for (String d : player.getDecipher()) {
+        for (String d : YtPlayer.getDecipher()) {
             a = decreptSignatuture(a, d);
         }
+
         return String.join("", a);
     }
     /**
@@ -42,15 +42,15 @@ public class Decipher {
      * @param player
      * @return List<String> return the List<String> of decipher fn of loaded player
      */
-    public static List<String> load(YtPlayer player) {
+    public static List<String> load(String jsUrl) {
 
         try {
-            HttpResponse<String> response = Client.getYtPlayerDecipher(player.getJsUrl());
-            return YExtractor.parsePlayerDecipher(response.body());
+            String response = Client.getYtPlayerDecipher(jsUrl);
+            return YExtractor.parsePlayerDecipher(response);
 
         } catch (Exception e) {
 
-            System.out.println(e.getMessage());
+            System.out.println("failed to load decipher fn");
         }
 
         return new ArrayList<String>();

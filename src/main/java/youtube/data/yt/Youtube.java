@@ -2,16 +2,15 @@ package youtube.data.yt;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import youtube.data.yt.core.Client;
-import youtube.data.niche.Response;
+import youtube.data.Interface.IVideoResponse;
 import youtube.data.niche.SearchListResponse;
-import youtube.data.niche.VideoInfo;
+import youtube.data.niche.SearchResponse;
+import youtube.data.niche.VideoResponse;
 import youtube.data.yt.core.Player;
 import youtube.data.yt.util.YExtractor;
 
@@ -38,15 +37,35 @@ public class Youtube extends Client{
 	 * 
 	 * @param videoId
 	 * @return Response return the response sychronous
-	 * @throws IOException
-	 * @throws InterruptedException
 	 */
-	public Response getVideoInfo(String videoId) throws IOException, InterruptedException {
+	public VideoResponse getVideoInfo(String videoId){
+		VideoResponse videoResponse=new VideoResponse();
+		try{
+			String response = this.fetchVideoInfo(videoId);
+			videoResponse.setData(YExtractor.parseVideoInfo(response));
+			return videoResponse;
+		}
+		 catch (Exception e) 
+		{
+			videoResponse.setErrors(e.getMessage());
+			return videoResponse;
+		}
+	}
+
+	/**
+	 * 
+	 * @param videoId
+	 * @param result
+	 * @return void
+	 */
+	public void getVideoInfo(String videoId,IVideoResponse result) {
 		try {
-			HttpResponse<String> response = this.fetchVideoInfo(videoId);
-			return new Response(null, YExtractor.parseVideoInfo(response.body()));
+			String response = this.fetchVideoInfo(videoId);
+			result.onSuccess(YExtractor.parseVideoInfo(response));
+			
 		} catch (Exception e) {
-			return new Response(e.getMessage(), null);
+		
+			result.onFailure(e.getMessage());
 		}
 	}
     
@@ -54,18 +73,19 @@ public class Youtube extends Client{
 	 * 
 	 * @param videoId
 	 * @return CompletableFuture<Response> return the response async
-	 * @throws UnsupportedEncodingException
 	 */
-	public CompletableFuture<Response> getVideoInfoAsync(String videoId) throws UnsupportedEncodingException {
-		CompletableFuture<Response> completableFuture = new CompletableFuture<Response>();
+	public CompletableFuture<VideoResponse> getVideoInfoAsync(String videoId){
+		CompletableFuture<VideoResponse> completableFuture = new CompletableFuture<VideoResponse>();
+		VideoResponse videoResponse=new VideoResponse();
 		try {
 
-			CompletableFuture<HttpResponse<String>> response = this.fetchVideoInfoAsync(videoId);
-			VideoInfo videoInfo = YExtractor.parseVideoInfo(response.join().body());
-			completableFuture.complete(new Response(null, videoInfo));
+			CompletableFuture<String> response = this.fetchVideoInfoAsync(videoId);
+			videoResponse.setData(YExtractor.parseVideoInfo(response.join()));
+			completableFuture.complete(videoResponse);
 			
 		} catch (Exception e) {
-			completableFuture.complete(new Response(e.getMessage(), null));
+			videoResponse.setErrors(e.getMessage());
+			completableFuture.complete(videoResponse);
 		}
 		return completableFuture;
 
@@ -76,13 +96,15 @@ public class Youtube extends Client{
 	 * @param limit
 	 * @return SearchListResponse return the searchListResponse sychronous
 	 */
-	public SearchListResponse search(String searchText,int limit) {
+	public SearchResponse search(String searchText,int limit) {
+		SearchResponse searchResponse=new SearchResponse();
 		try {
-			HttpResponse<String> response = this.searchV3(searchText,limit);
-			return new Gson().fromJson(response.body(),new TypeToken<SearchListResponse>(){}.getType());
+			String response = this.searchV3(searchText,limit);
+			searchResponse.setData(new Gson().fromJson(response,new TypeToken<SearchListResponse>(){}.getType()));
+			return searchResponse;
 		} catch (Exception e) {
-		    System.out.println(e);
-			return null;
+		    searchResponse.setErrors(e.getMessage());
+			return searchResponse;
 		}
 	}
     
@@ -91,17 +113,19 @@ public class Youtube extends Client{
 	 * @param searchText
 	 * @param limit
 	 * @return CompletableFuture<SearchListResponse> return the searchListResponse async
-	 * @throws UnsupportedEncodingException
 	 */
-	public CompletableFuture<SearchListResponse> searchAsync(String searchText,int limit) throws UnsupportedEncodingException {
-		CompletableFuture<SearchListResponse> completableFuture = new CompletableFuture<SearchListResponse>();
+	public CompletableFuture<SearchResponse> searchAsync(String searchText,int limit) {
+		CompletableFuture<SearchResponse> completableFuture = new CompletableFuture<SearchResponse>();
+		SearchResponse searchResponse=new SearchResponse();
 		try {
 
-			  CompletableFuture<HttpResponse<String>> response = this.searchV3Async(searchText,limit);
-			completableFuture.complete(new Gson().fromJson(response.join().body(),new TypeToken<SearchListResponse>(){}.getType()));
+			  CompletableFuture<String> response = this.searchV3Async(searchText,limit);
+			  searchResponse.setData(new Gson().fromJson(response.join(),new TypeToken<SearchListResponse>(){}.getType()));
+			  completableFuture.complete(searchResponse);
 			
 		} catch (Exception e) {
-			completableFuture.complete(null);
+			searchResponse.setErrors(e.getMessage());
+			completableFuture.complete(searchResponse);
 		}
 
 		return completableFuture;
@@ -114,17 +138,19 @@ public class Youtube extends Client{
 	 * @param channelId
 	 * @param limit
 	 * @return CompletableFuture<SearchListResponse> return the searchListResponse async
-	 * @throws UnsupportedEncodingException
 	 */
-	public CompletableFuture<SearchListResponse> searchAsync(String searchText,String channelId,int limit) throws UnsupportedEncodingException {
-		CompletableFuture<SearchListResponse> completableFuture = new CompletableFuture<SearchListResponse>();
+	 public CompletableFuture<SearchResponse> searchAsync(String searchText,String channelId,int limit) {
+		CompletableFuture<SearchResponse> completableFuture = new CompletableFuture<SearchResponse>();
+		SearchResponse searchResponse=new SearchResponse();
 		try {
 
-			  CompletableFuture<HttpResponse<String>> response = this.searchV3Async(searchText,channelId,limit);
-			completableFuture.complete(new Gson().fromJson(response.join().body(),new TypeToken<SearchListResponse>(){}.getType()));
+			CompletableFuture<String> response = this.searchV3Async(searchText,channelId,limit);
+			searchResponse.setData(new Gson().fromJson(response.join(),new TypeToken<SearchListResponse>(){}.getType()));
+			completableFuture.complete(searchResponse);
 			
 		} catch (Exception e) {
-			completableFuture.complete(null);
+			searchResponse.setErrors(e.getMessage());
+			completableFuture.complete(searchResponse);
 		}
 		
 		return completableFuture;

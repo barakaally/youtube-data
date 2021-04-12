@@ -2,19 +2,10 @@ package youtube.data.niche;
 /**
  * @description the VideoInfo Response
  */
-public class Response {
+public class VideoResponse {
     private Object errors;
     private VideoInfo data;
-
-    /**
-     * 
-     * @param errors
-     * @param data
-     */
-    public Response(Object errors, VideoInfo data) {
-        this.errors = errors;
-        this.data = data;
-    }
+   
 
     /**
      * @return Object return the errors
@@ -28,6 +19,20 @@ public class Response {
      */
     public VideoInfo getData() {
         return data;
+    }
+
+    /**
+     * @param errors the errors to set
+     */
+    public void setErrors(Object errors) {
+        this.errors = errors;
+    }
+
+    /**
+     * @param data the data to set
+     */
+    public void setData(VideoInfo data) {
+        this.data = data;
     }
 
 }

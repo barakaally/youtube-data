@@ -1,105 +1,189 @@
 package youtube.data.yt.core;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
-    /**
-     * @description the  Client
-     */
-    public abstract  class Client {
+
+import javax.net.ssl.HttpsURLConnection;
+
+/**
+ * @description the Client
+ */
+public abstract class Client {
     private String apiKey;
-     /**
-      * @descrition Client's constructor
-      */
-     public Client(){}
-     /**
-      *@param key
-      *@description Client's constructor
-      */
-     public Client(String key){
-         this.apiKey=key;
-     }
+
+    /**
+     * @descrition Client's constructor
+     */
+    public Client() {
+    }
+
+    /**
+     * @param key
+     * @description Client's constructor
+     */
+    public Client(String key) {
+        this.apiKey = key;
+    }
 
     /**
      * 
      * @param videoId
-     * @return CompletableFuture<HttpResponse<String>> return the String of videoInfo async
+     * @return CompletableFuture<HttpResponse<String>> return the String of
+     *         videoInfo async
      */
-    protected  CompletableFuture<HttpResponse<String>>  fetchVideoInfoAsync(String videoId){
-        HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder()
-		      .uri(URI.create(String.format("https://www.youtube.com/get_video_info?video_id=%s&el=embedded&ps=default&eurl=&gl=US&hl=en",videoId) ))
-		      .build();
-              return client.sendAsync(request, BodyHandlers.ofString());
+    protected CompletableFuture<String> fetchVideoInfoAsync(String videoId) {
+        CompletableFuture<String> completable = new CompletableFuture<String>();
+        HttpsURLConnection mConnection;
+        try {
+            mConnection = (HttpsURLConnection) new URL(String.format("https://www.youtube.com/get_video_info?video_id=%s&el=embedded&ps=default&eurl=&gl=US&hl=en",videoId)).openConnection();
+            mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+            reader.close();
+            completable.complete(builder.toString());
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return completable;
     }
 
-   /**
-    * @param videoId
-    * @return HttpResponse<String> return the String of videoInfo syschrous
-    * @throws IOException
-    * @throws InterruptedException
-    */
-    protected  HttpResponse<String>  fetchVideoInfo(String videoId) throws IOException, InterruptedException{
-        HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder()
-		      .uri(URI.create(String.format("https://www.youtube.com/get_video_info?video_id=%s&el=embedded&ps=default&eurl=&gl=US&hl=en",videoId) ))
-		      .build();
-              
-              return client.send(request, BodyHandlers.ofString());
+    /**
+     * @param videoId
+     * @return HttpResponse<String> return the String of videoInfo syschrous
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    protected String fetchVideoInfo(String videoId) throws IOException, InterruptedException {
+
+        HttpsURLConnection mConnection = (HttpsURLConnection) new URL(String.format(
+                "https://www.youtube.com/get_video_info?video_id=%s&el=embedded&ps=default&eurl=&gl=US&hl=en", videoId))
+                        .openConnection();
+        mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+        StringBuilder builder = new StringBuilder();
+        String line;
+
+        while ((line = reader.readLine()) != null)
+            builder.append(line);
+
+        reader.close();
+
+        return builder.toString();
     }
+
     /**
      * 
-     * @return  CompletableFuture<HttpResponse<String>> return the String of playerJs async
+     * @return CompletableFuture<HttpResponse<String>> return the String of playerJs
+     *         async
      */
-    protected static CompletableFuture<HttpResponse<String>> getPlayerJsAsync(){
-        HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder()
-		      .uri(URI.create(String.format("https://www.youtube.com/") ))
-		      .build();
-              return client.sendAsync(request, BodyHandlers.ofString());
+    protected static CompletableFuture<String> getPlayerJsAsync() {
+        CompletableFuture<String> completable = new CompletableFuture<String>();
+        try {
+            HttpsURLConnection mConnection = (HttpsURLConnection) new URL("https://www.youtube.com/").openConnection();
+            mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+
+            reader.close();
+            completable.complete(builder.toString());
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+        return completable;
     }
+
     /**
      * 
      * @return HttpResponse<String> return the String of Youtube playerJs sychronous
      * @throws IOException
      * @throws InterruptedException
      */
-    protected static HttpResponse<String>  getPlayerJs() throws IOException, InterruptedException{
-        HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder()
-		      .uri(URI.create(String.format("https://www.youtube.com/") ))
-		      .build();
-              
-              return client.send(request, BodyHandlers.ofString());
+    protected static String getPlayerJs() throws IOException, InterruptedException {
+        HttpsURLConnection mConnection = (HttpsURLConnection) new URL("https://www.youtube.com/").openConnection();
+        mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+        StringBuilder builder = new StringBuilder();
+        String line;
+
+        while ((line = reader.readLine()) != null)
+            builder.append(line);
+
+        reader.close();
+        return builder.toString();
     }
 
     /**
      * @param jsUrl
-     * @return CompletableFuture<HttpResponse<String>> return the String of Youtube playerDecipher async
+     * @return CompletableFuture<HttpResponse<String>> return the String of Youtube
+     *         playerDecipher async
      */
-    protected static CompletableFuture<HttpResponse<String>> getYtPlayerDecipherAsync(String jsUrl){
-        HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder()
-		      .uri(URI.create(jsUrl))
-		      .build();
-              return client.sendAsync(request, BodyHandlers.ofString());
+    protected static CompletableFuture<String> getYtPlayerDecipherAsync(String jsUrl) {
+        CompletableFuture<String> completable = new CompletableFuture<String>();
+        try {
+            HttpsURLConnection mConnection = (HttpsURLConnection) new URL(jsUrl).openConnection();
+            mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+
+            reader.close();
+            completable.complete(builder.toString());
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+        return completable;
     }
-    
+
     /**
      * @param jsUrl
-     * @return CompletableFuture<HttpResponse<String>> return the String of Youtube playerDecipher sychrounous
+     * @return CompletableFuture<HttpResponse<String>> return the String of Youtube
+     *         playerDecipher sychrounous
      */
-    protected static HttpResponse<String>  getYtPlayerDecipher(String jsUrl) throws IOException, InterruptedException{
-        HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder()
-		      .uri(URI.create(String.format(jsUrl) ))
-		      .build();
-              
-              return client.send(request, BodyHandlers.ofString());
+    protected static String getYtPlayerDecipher(String jsUrl) {
+
+        try {
+            HttpsURLConnection mConnection = (HttpsURLConnection) new URL(jsUrl).openConnection();
+            mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+
+            reader.close();
+            return builder.toString();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+        return null;
     }
 
     /**
@@ -107,23 +191,29 @@ import java.util.concurrent.CompletableFuture;
      * @param searchText
      * @param channelId
      * @param limit
-     * @return HttpResponse<String> return the String of searchListResult 
+     * @return HttpResponse<String> return the String of searchListResult
      * @throws Exception
      */
-    protected  HttpResponse<String>  searchV3(String searchText,String channelId,int limit) throws Exception{
-       if(apiKey!=null){
-        HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder()
-		      .uri(URI.create(String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,channelId,limit,searchText.replaceAll("\s","%20")) ))
-		      .build();
-              
-              return client.send(request, BodyHandlers.ofString());
-       }
-       else
-       {
-          throw new Exception("Api Key not provided");
-       }
-       
+    protected String searchV3(String searchText, String channelId, int limit) throws Exception {
+        if (apiKey != null) {
+            HttpsURLConnection mConnection = (HttpsURLConnection) new URL(String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey, channelId, limit, searchText.replaceAll("\s", "%20"))).openConnection();
+            mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+
+            reader.close();
+
+            return builder.toString();
+
+        } else {
+            throw new Exception("Api Key not provided");
+        }
+
     }
 
     /**
@@ -134,19 +224,28 @@ import java.util.concurrent.CompletableFuture;
      * @return HttpResponse<String> return the String of searchListResult async
      * @throws Exception
      */
-    protected CompletableFuture<HttpResponse<String>> searchV3Async(String searchText,String channelId,int limit) throws Exception{
-        if(apiKey!=null){
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                  .uri(URI.create(String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,channelId,limit,searchText.replaceAll("\s","%20")) ))
-                  .build();
-                  
-                  return client.sendAsync(request, BodyHandlers.ofString());
-           }
-           else
-           {
-              throw new Exception("Api Key not provided");
-           }
+    protected CompletableFuture<String> searchV3Async(String searchText, String channelId, int limit) throws Exception {
+        CompletableFuture<String> completable = new CompletableFuture<String>();
+        if (apiKey != null) {
+
+            HttpsURLConnection mConnection = (HttpsURLConnection) new URL(String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey, channelId, limit, searchText.replaceAll("\s", "%20"))).openConnection();
+            mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+
+            reader.close();
+
+            completable.complete(builder.toString());
+        } else {
+            throw new Exception("Api Key not provided");
+        }
+
+        return completable;
     }
 
     /**
@@ -156,41 +255,55 @@ import java.util.concurrent.CompletableFuture;
      * @return HttpResponse<String> return the String of searchListResult sychronous
      * @throws Exception
      */
-    protected  HttpResponse<String>  searchV3(String searchText,int limit) throws Exception{
-        if(apiKey!=null){
-         HttpClient client = HttpClient.newHttpClient();
-         HttpRequest request = HttpRequest.newBuilder()
-               .uri(URI.create(String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,limit,searchText.replaceAll("\s","%20"))))
-               .build();
-               
-               return client.send(request, BodyHandlers.ofString());
-        }
-        else
-        {
-           throw new Exception("Api Key not provided");
-        }
-        
-     }
+    protected String searchV3(String searchText, int limit) throws Exception {
 
-     /**
+        if (apiKey != null) {
+            HttpsURLConnection mConnection = (HttpsURLConnection) new URL(String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey, limit, searchText.replaceAll("\s", "%20"))).openConnection();
+            mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+
+            reader.close();
+
+            return builder.toString();
+        } else {
+            throw new Exception("Api Key not provided");
+        }
+
+    }
+
+    /**
      * 
      * @param searchText
      * @param limit
      * @return HttpResponse<String> return the String of searchListResult async
      * @throws Exception
      */
-    protected CompletableFuture<HttpResponse<String>> searchV3Async(String searchText,int limit) throws Exception{
-        if(apiKey!=null){
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                  .uri(URI.create(String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,limit,searchText.replaceAll("\s","%20")) ))
-                  .build();
-                  
-                  return client.sendAsync(request, BodyHandlers.ofString());
-           }
-           else
-           {
-              throw new Exception("Api Key not provided");
-           }
+    protected CompletableFuture<String> searchV3Async(String searchText, int limit) throws Exception {
+        CompletableFuture<String> completable = new CompletableFuture<String>();
+        if (apiKey != null) {
+            HttpsURLConnection mConnection = (HttpsURLConnection) new URL(String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey, limit, searchText.replaceAll("\s", "%20"))).openConnection();
+            mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+
+            reader.close();
+
+            completable.complete(reader.toString());
+        } else {
+            throw new Exception("Api Key not provided");
+        }
+
+        return completable;
     }
 }

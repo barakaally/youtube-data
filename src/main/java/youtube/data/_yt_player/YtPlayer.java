@@ -1,51 +1,40 @@
 package youtube.data._yt_player;
-import java.util.ArrayList;
 import java.util.List;
 /**
  * the YtPlayer
  */
 public class YtPlayer {
-    private String host;
-    private String jsUrl;
-    private List<String> decipher;
-    /**
-     * 
-     * @param host
-     * @param jsUrl
-     */
-    public YtPlayer(String host, String jsUrl) {
-        this.host = host;
-        this.jsUrl = String.format("https://www.youtube.com%s", jsUrl);
-        this.decipher=new ArrayList<String>();
-    }
+    private static String jsUrl;
+    private static List<String> decipher;
+    
     /**
      * 
      * @return  List<String>  return the decipher
      */
-    public List<String> getDecipher() {
+    public static List<String> getDecipher() {
         return decipher;
     }
     /**
      * 
      * @param decipher set decipher
      */
-    public void setDecipher(List<String> decipher) {
-        this.decipher = decipher;
+    public static void setDecipher(List<String> dec) {
+        decipher = dec;
     }
-    /**
-     * 
-     * @return  String return the host
-     */
-    public String getHost() {
-        return host;
-    }
+   
     /**
      * 
      * @return String return the jsUrl
      */
-    public String getJsUrl() {
+    public static String getJsUrl() {
         return jsUrl;
     }
 
+    /**
+     * @param jsUrl the jsUrl to set
+     */
+    public static void setJsUrl(String url) {
+        jsUrl = String.format("https://www.youtube.com%s", url);
+    }
 
 }
