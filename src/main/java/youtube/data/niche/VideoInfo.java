@@ -1,4 +1,4 @@
-﻿package youtube.data.niche;
+package youtube.data.niche;
 /**
  * @description the VideoInfo
  */
