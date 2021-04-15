@@ -5,7 +5,7 @@
 
   <groupId>com.barakaally.ytplayer</groupId>
   <artifactId>youtube-data</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.2</version>
 
   <name>youtube-data</name>
   <!-- FIXME change it to the project's website -->
