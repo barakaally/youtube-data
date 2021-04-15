@@ -5,7 +5,7 @@
 
   <groupId>com.barakaally.ytplayer</groupId>
   <artifactId>youtube-data</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
 
   <name>youtube-data</name>
   <!-- FIXME change it to the project's website -->
@@ -14,7 +14,7 @@
     <connection>scm:git:https://github.com/barakaally/youtube-data.git</connection>
     <developerConnection>scm:git:https://github.com/barakaally/youtube-data.git</developerConnection>
     <url>https://github.com/barakaally/youtube-data</url>
-    <tag>v1.0.1</tag>
+    <tag>v1.0.2</tag>
   </scm>
   <distributionManagement>
     <repository>
@@ -29,7 +29,6 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.release>8</maven.compiler.release>
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -44,7 +43,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
@@ -53,6 +51,7 @@
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
+        
         <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>

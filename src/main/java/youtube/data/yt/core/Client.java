@@ -9,6 +9,8 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import youtube.data.Interface.HttpResponse;
+
 /**
  * @description the Client
  */
@@ -67,9 +69,7 @@ public abstract class Client {
      */
     protected String fetchVideoInfo(String videoId) throws IOException, InterruptedException {
 
-        HttpsURLConnection mConnection = (HttpsURLConnection) new URL(String.format(
-                "https://www.youtube.com/get_video_info?video_id=%s&el=embedded&ps=default&eurl=&gl=US&hl=en", videoId))
-                        .openConnection();
+        HttpsURLConnection mConnection = (HttpsURLConnection) new URL(String.format("https://www.youtube.com/get_video_info?video_id=%s&el=embedded&ps=default&eurl=&gl=US&hl=en", videoId)).openConnection();
         mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
@@ -89,8 +89,9 @@ public abstract class Client {
      * @return CompletableFuture<HttpResponse<String>> return the String of playerJs
      *         async
      */
-    protected static CompletableFuture<String> getPlayerJsAsync() {
-        CompletableFuture<String> completable = new CompletableFuture<String>();
+    protected static CompletableFuture<HttpResponse> getPlayerJsAsync() {
+        CompletableFuture<HttpResponse> completable = new CompletableFuture<HttpResponse>();
+          HttpResponse httResponse=new HttpResponse();
         try {
             HttpsURLConnection mConnection = (HttpsURLConnection) new URL("https://www.youtube.com/").openConnection();
             mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
@@ -103,9 +104,11 @@ public abstract class Client {
                 builder.append(line);
 
             reader.close();
-            completable.complete(builder.toString());
+            httResponse.setBody(builder.toString());
+            completable.complete(httResponse);
         } catch (Exception e) {
-            // TODO: handle exception
+            httResponse.setError(e);
+            completable.complete(httResponse);
         }
 
         return completable;
@@ -161,10 +164,11 @@ public abstract class Client {
 
     /**
      * @param jsUrl
-     * @return CompletableFuture<HttpResponse<String>> return the String of Youtube
+     * @return String return the String of Youtube
      *         playerDecipher sychrounous
+     * @throws Exception
      */
-    protected static String getYtPlayerDecipher(String jsUrl) {
+    protected static String getYtPlayerDecipher(String jsUrl) throws Exception {
 
         try {
             HttpsURLConnection mConnection = (HttpsURLConnection) new URL(jsUrl).openConnection();
@@ -180,10 +184,9 @@ public abstract class Client {
             reader.close();
             return builder.toString();
         } catch (Exception e) {
-            // TODO: handle exception
+            throw new Exception(e.getMessage());
         }
 
-        return null;
     }
 
     /**

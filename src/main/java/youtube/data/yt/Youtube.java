@@ -1,12 +1,13 @@
 package youtube.data.yt;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.CompletableFuture;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import youtube.data.yt.core.Client;
+import youtube.data.Interface.IPlayerResponse;
 import youtube.data.Interface.IVideoResponse;
 import youtube.data.niche.SearchListResponse;
 import youtube.data.niche.SearchResponse;
@@ -31,6 +32,23 @@ public class Youtube extends Client{
 	public Youtube buildPlayer() {
 		Player.build();
 		return this;
+	}
+
+	public void buildPlayer(IPlayerResponse iplayer) {
+		try
+		{   
+			Player.build();
+			iplayer.onReady();		
+			
+		}
+		catch(ArrayIndexOutOfBoundsException e){
+			Player.build();
+			iplayer.onReady();	
+		}
+		catch(Exception e)
+		{
+            iplayer.onFailure(e);
+		}
 	}
     
 	/**
@@ -100,7 +118,9 @@ public class Youtube extends Client{
 		SearchResponse searchResponse=new SearchResponse();
 		try {
 			String response = this.searchV3(searchText,limit);
-			searchResponse.setData(new Gson().fromJson(response,new TypeToken<SearchListResponse>(){}.getType()));
+			
+			 searchResponse.setData(new Gson().fromJson(response,new TypeToken<SearchListResponse>(){}.getType()));
+		
 			return searchResponse;
 		} catch (Exception e) {
 		    searchResponse.setErrors(e.getMessage());
@@ -120,6 +140,7 @@ public class Youtube extends Client{
 		try {
 
 			  CompletableFuture<String> response = this.searchV3Async(searchText,limit);
+			 
 			  searchResponse.setData(new Gson().fromJson(response.join(),new TypeToken<SearchListResponse>(){}.getType()));
 			  completableFuture.complete(searchResponse);
 			

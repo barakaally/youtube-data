@@ -41,19 +41,19 @@ public class Decipher {
      * 
      * @param player
      * @return List<String> return the List<String> of decipher fn of loaded player
+     * @throws Exception
      */
-    public static List<String> load(String jsUrl) {
+    public static List<String> load(String jsUrl) throws Exception {
 
         try {
             String response = Client.getYtPlayerDecipher(jsUrl);
-            return YExtractor.parsePlayerDecipher(response);
+            List<String> decipherfn = YExtractor.parsePlayerDecipher(response);
+            return decipherfn;
 
         } catch (Exception e) {
 
-            System.out.println("failed to load decipher fn");
+          throw new Exception(e.getMessage());
         }
-
-        return new ArrayList<String>();
 
     }
 

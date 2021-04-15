@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import youtube.data._yt_player.YtPlayer;
 import youtube.data.yt.core.Decipher;
 import youtube.data.niche.VideoInfo;
+
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 
 /**
  * @description the YExtractor
@@ -42,7 +45,7 @@ public class YExtractor {
 			}
 
 		}
-
+	
 		Type type = new TypeToken<VideoInfo>() {
 		}.getType();
 		return new GsonBuilder().disableHtmlEscaping().create().fromJson(BHashMap.toJsonElement(map).toString(), type);
@@ -51,17 +54,18 @@ public class YExtractor {
 	 * 
 	 * @param playerInfo
 	 * @return YtPlayer return the ytPlayer
+     * @throws Exception
 	 */
-	public static void parsePlayer(String playerInfo) {
+	public static void parsePlayer(String playerInfo) throws Exception {
 		Pattern p = Pattern
 				.compile("\\/s\\/player\\/[a-zA-Z0-9]{1,}\\/[(a-zA-z)\\.(a-zA-Z)]{1,}\\/[(a-zA-Z)\\_]{1,}\\/base.js");
 		Matcher m = p.matcher(playerInfo);
 		if(m.find()){
+
 			YtPlayer.setJsUrl(m.group(0));
-			YtPlayer.setDecipher(Decipher.load(YtPlayer.getJsUrl()));
-			
+			YtPlayer.setDecipher(Decipher.load(String.format("https://www.youtube.com%s", m.group(0))));	
 		}
-	
+        
 	}
     /**
 	 * 

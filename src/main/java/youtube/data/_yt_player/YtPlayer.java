@@ -11,7 +11,7 @@ public class YtPlayer {
      * 
      * @return  List<String>  return the decipher
      */
-    public static List<String> getDecipher() {
+    public static  List<String> getDecipher() {
         return decipher;
     }
     /**
@@ -33,8 +33,9 @@ public class YtPlayer {
     /**
      * @param jsUrl the jsUrl to set
      */
-    public static void setJsUrl(String url) {
+    public static  void setJsUrl(String url) {
         jsUrl = String.format("https://www.youtube.com%s", url);
     }
+   
 
 }
