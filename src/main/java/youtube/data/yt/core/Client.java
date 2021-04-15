@@ -199,7 +199,8 @@ public abstract class Client {
 	 */
 	protected String searchV3(String searchText, String channelId, int limit) throws Exception {
 		if (apiKey != null) {
-			String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,channelId,limit,searchText.replaceAll("\s","%20"));
+			
+			String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,channelId,limit,searchText);
 			HttpsURLConnection mConnection = (HttpsURLConnection) new URL(url).openConnection();
 			mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
