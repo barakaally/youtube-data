@@ -200,7 +200,7 @@ public abstract class Client {
 	protected String searchV3(String searchText, String channelId, int limit) throws Exception {
 		if (apiKey != null) {
 			
-			String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,channelId,limit,searchText);
+			String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,channelId,limit,searchText.replaceAll("\\s","%20"));
 			HttpsURLConnection mConnection = (HttpsURLConnection) new URL(url).openConnection();
 			mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(mConnection.getInputStream()));
@@ -231,7 +231,7 @@ public abstract class Client {
 	protected CompletableFuture<String> searchV3Async(String searchText, String channelId, int limit) throws Exception {
 		CompletableFuture<String> completable = new CompletableFuture<String>();
 		if (apiKey != null) {
-            String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,channelId,limit,searchText.replaceAll("\s","%20"));
+            String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,channelId,limit,searchText.replaceAll("\\s","%20"));
 			HttpsURLConnection mConnection = (HttpsURLConnection) new URL(url).openConnection();
 			mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
 
@@ -262,7 +262,7 @@ public abstract class Client {
 	protected String searchV3(String searchText, int limit) throws Exception {
 
 		if (apiKey != null) {
-			String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,limit,searchText.replaceAll("\s","%20"));
+			String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,limit,searchText.replaceAll("\\s","%20"));
 			HttpsURLConnection mConnection = (HttpsURLConnection) new URL(url).openConnection();
 			mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
 
@@ -292,7 +292,7 @@ public abstract class Client {
 	protected CompletableFuture<String> searchV3Async(String searchText, int limit) throws Exception {
 		CompletableFuture<String> completable = new CompletableFuture<String>();
 		if (apiKey != null) {
-			String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,limit,searchText.replaceAll("\s","%20"));
+			String url=String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet,id&order=date&maxResults=%d&q=%s",apiKey,limit,searchText.replaceAll("\\s","%20"));
 			HttpsURLConnection mConnection = (HttpsURLConnection) new URL(url).openConnection();
 			mConnection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
 
