@@ -29,24 +29,10 @@ public class Statistic {
     }
 
     /**
-     * @param likeCount the likeCount to set
-     */
-    public void setLikeCount(String likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    /**
      * @return String return the dislikeCount
      */
     public String getDislikeCount() {
         return dislikeCount;
-    }
-
-    /**
-     * @param dislikeCount the dislikeCount to set
-     */
-    public void setDislikeCount(String dislikeCount) {
-        this.dislikeCount = dislikeCount;
     }
 
     /**
@@ -57,24 +43,10 @@ public class Statistic {
     }
 
     /**
-     * @param favoriteCount the favoriteCount to set
-     */
-    public void setFavoriteCount(String favoriteCount) {
-        this.favoriteCount = favoriteCount;
-    }
-
-    /**
      * @return String return the commentCount
      */
     public String getCommentCount() {
         return commentCount;
-    }
-
-    /**
-     * @param commentCount the commentCount to set
-     */
-    public void setCommentCount(String commentCount) {
-        this.commentCount = commentCount;
     }
 
 }

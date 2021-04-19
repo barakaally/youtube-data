@@ -1,15 +1,18 @@
 package youtube.data.niche;
-/**
- * @description the SearchResult
- */
-public class SearchResult {
+
+import java.util.List;
+
+public class VideoResult {
     private String kind;
     private String etag;
     private String channelTitle;
     private String liveBroadcastContent;
     private String publishTime;
-    private Video id;
+    private String id;
+    private List<String> tags;
     private Snippet snippet;
+    private Statistic statistics;
+    
 
     /**
      * @return String return the kind
@@ -32,6 +35,7 @@ public class SearchResult {
         return channelTitle;
     }
 
+
     /**
      * @return String return the liveBroadcastContent
      */
@@ -47,10 +51,17 @@ public class SearchResult {
     }
 
     /**
-     * @return Video return the id
+     * @return String return the id
      */
-    public Video getId() {
+    public String getId() {
         return id;
+    }
+
+    /**
+     * @return List<String> return the tags
+     */
+    public List<String> getTags() {
+        return tags;
     }
 
     /**
@@ -58,6 +69,13 @@ public class SearchResult {
      */
     public Snippet getSnippet() {
         return snippet;
+    }
+
+    /**
+     * @return Statistic return the statistics
+     */
+    public Statistic getStatistics() {
+        return statistics;
     }
 
 }
