@@ -10,6 +10,7 @@ public class SearchResult {
     private String publishTime;
     private Video id;
     private Snippet snippet;
+    private Statistic statistics;
 
     /**
      * @return String return the kind
@@ -58,6 +59,14 @@ public class SearchResult {
      */
     public Snippet getSnippet() {
         return snippet;
+    }
+
+
+    /**
+     * @return Statistic return the statistics
+     */
+    public Statistic getStatistics() {
+        return statistics;
     }
 
 }

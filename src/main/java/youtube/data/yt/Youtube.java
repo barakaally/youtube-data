@@ -87,27 +87,7 @@ public class Youtube extends Client{
 		}
 	}
     
-	/**
-	 * 
-	 * @param videoId
-	 * @return CompletableFuture<Response> return the response async
-	 */
-	public CompletableFuture<VideoResponse> getVideoInfoAsync(String videoId){
-		CompletableFuture<VideoResponse> completableFuture = new CompletableFuture<VideoResponse>();
-		VideoResponse videoResponse=new VideoResponse();
-		try {
-
-			CompletableFuture<String> response = this.fetchVideoInfoAsync(videoId);
-			videoResponse.setData(YExtractor.parseVideoInfo(response.join()));
-			completableFuture.complete(videoResponse);
-			
-		} catch (Exception e) {
-			videoResponse.setErrors(e.getMessage());
-			completableFuture.complete(videoResponse);
-		}
-		return completableFuture;
-
-	}
+	
     
 	/**
 	 * @param searchText
@@ -128,54 +108,5 @@ public class Youtube extends Client{
 		}
 	}
     
-	/**
-	 * 
-	 * @param searchText
-	 * @param limit
-	 * @return CompletableFuture<SearchListResponse> return the searchListResponse async
-	 */
-	public CompletableFuture<SearchResponse> searchAsync(String searchText,int limit) {
-		CompletableFuture<SearchResponse> completableFuture = new CompletableFuture<SearchResponse>();
-		SearchResponse searchResponse=new SearchResponse();
-		try {
-
-			  CompletableFuture<String> response = this.searchV3Async(searchText,limit);
-			 
-			  searchResponse.setData(new Gson().fromJson(response.join(),new TypeToken<SearchListResponse>(){}.getType()));
-			  completableFuture.complete(searchResponse);
-			
-		} catch (Exception e) {
-			searchResponse.setErrors(e.getMessage());
-			completableFuture.complete(searchResponse);
-		}
-
-		return completableFuture;
-
-	}
-    
-	/**
-	 * 
-	 * @param searchText
-	 * @param channelId
-	 * @param limit
-	 * @return CompletableFuture<SearchListResponse> return the searchListResponse async
-	 */
-	 public CompletableFuture<SearchResponse> searchAsync(String searchText,String channelId,int limit) {
-		CompletableFuture<SearchResponse> completableFuture = new CompletableFuture<SearchResponse>();
-		SearchResponse searchResponse=new SearchResponse();
-		try {
-
-			CompletableFuture<String> response = this.searchV3Async(searchText,channelId,limit);
-			searchResponse.setData(new Gson().fromJson(response.join(),new TypeToken<SearchListResponse>(){}.getType()));
-			completableFuture.complete(searchResponse);
-			
-		} catch (Exception e) {
-			searchResponse.setErrors(e.getMessage());
-			completableFuture.complete(searchResponse);
-		}
-		
-		return completableFuture;
-
-	}
 
 }
