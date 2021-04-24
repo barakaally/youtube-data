@@ -4,5 +4,5 @@ import youtube.data.niche.VideoInfo;
 
 public interface IVideoResponse {
    void onSuccess(VideoInfo data);
-   void onFailure(Object error);
+   void onFailure(Exception error);
 }

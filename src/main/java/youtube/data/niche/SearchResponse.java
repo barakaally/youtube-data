@@ -1,7 +1,7 @@
 package youtube.data.niche;
 
 public class SearchResponse {
-    private Object errors;
+    private String errors;
     private SearchListResponse data;
     
 
@@ -15,7 +15,7 @@ public class SearchResponse {
     /**
      * @param errors the errors to set
      */
-    public void setErrors(Object errors) {
+    public void setErrors(String errors) {
         this.errors = errors;
     }
 

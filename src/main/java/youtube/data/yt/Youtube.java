@@ -83,7 +83,7 @@ public class Youtube extends Client{
 			
 		} catch (Exception e) {
 		
-			result.onFailure(e.getMessage());
+			result.onFailure(e);
 		}
 	}
     
